@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { evaluate } from "mathjs";
-import "./Calculator.css";
 
 function Calculator() {
   const [input, setInput] = useState("");
@@ -22,15 +21,13 @@ function Calculator() {
         return;
       }
 
-      const output = evaluate(input);
-
-      // Custom 0/0 check
       if (input === "0/0") {
         setResult("NaN");
       } else {
+        const output = evaluate(input);
         setResult(output.toString());
       }
-    } catch (err) {
+    } catch {
       setResult("Error");
     }
   };
@@ -42,14 +39,48 @@ function Calculator() {
     "C", "0", "=", "/"
   ];
 
+  // Style objects
+  const styles = {
+    calculator: {
+      textAlign: "center",
+      marginTop: "30px",
+      fontFamily: "Arial, sans-serif",
+    },
+    input: {
+      width: "200px",
+      height: "40px",
+      fontSize: "20px",
+      textAlign: "right",
+      marginBottom: "20px",
+    },
+    buttonGrid: {
+      display: "grid",
+      gridTemplateColumns: "repeat(4, 60px)",
+      gap: "10px",
+      justifyContent: "center",
+      margin: "0 auto",
+    },
+    button: {
+      height: "50px",
+      fontSize: "20px",
+      cursor: "pointer",
+    },
+    result: {
+      marginTop: "20px",
+      fontSize: "24px",
+      fontWeight: "bold",
+    },
+  };
+
   return (
-    <div className="calculator">
+    <div style={styles.calculator}>
       <h1>React Calculator</h1>
-      <input type="text" value={input} readOnly />
-      <div className="button-grid">
+      <input type="text" value={input} readOnly style={styles.input} />
+      <div style={styles.buttonGrid}>
         {buttons.map((btn, idx) => (
           <button
             key={idx}
+            style={styles.button}
             onClick={() =>
               btn === "=" ? handleEqual() :
               btn === "C" ? handleClear() :
@@ -60,7 +91,7 @@ function Calculator() {
           </button>
         ))}
       </div>
-      <div className="result">{result}</div>
+      <div style={styles.result}>{result}</div>
     </div>
   );
 }
